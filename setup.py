@@ -27,7 +27,7 @@ def readme():
         return f.read()
 
 setup(name='DiNoLog',
-      version='0.1',
+      version='0.0.1',
       description='Distributed Node Logging for Python',
       long_description=readme(),
       classifiers=[
@@ -35,6 +35,9 @@ setup(name='DiNoLog',
             'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
             'Framework :: Twisted'
             'Programming Language :: Python :: 3',
+            'Programming Language :: Python :: 3.2',
+            'Programming Language :: Python :: 3.3',
+            'Programming Language :: Python :: 3.4',
       ],
       url='http://github.com/raimund89/DiNoLog',
       author='Raimond Frentrop',
