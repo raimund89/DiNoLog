@@ -19,16 +19,36 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 
-from twisted.internet import protocol
+# The server flow:
+# - Read the config file (includes the server list)
+# - Add an instance of the LoggingHandler so we can read and
+#   write data, and get a list of nodes when necessary
+# - Create and instance of the SyncHandler (does an initial update)
+# - When syncing is done, create a NodeHandler. It listens for any
+#   incoming node connections and handles them
 
 
-class LoggingHandler(protocol.Protocol):
+class DiNoLogServer:
 
-    def connectionMade(self):
+    def __init__(self):
+        '''Initialize some basic parameters and load the config file'''
         pass
 
-    def dataReceived(self, data):
+    def update(self):
+        '''Forces a synchronization between the servers. Must be done'''
+        '''before the /run/ function can be called!!'''
         pass
 
-    def connectionLost(self):
+    def run(self):
+        '''Actually starts the server to listen to the nodes'''
+        pass
+
+    def stop(self):
+        '''A graceful way of killing the server'''
+        pass
+
+
+class LoggingHandler():
+
+    def __init__(self):
         pass
