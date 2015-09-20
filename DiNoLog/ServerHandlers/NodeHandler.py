@@ -19,8 +19,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 
+from .Networks import Ethernet, Radio433MHz, RF24, Sockets, USB
+
 
 class NodeHandler():
 
     def __init__(self):
-        pass
+        self.net_ethernet = Ethernet.Ethernet()
+        self.net_radio = Radio433MHz.Radio433MHz()
+        self.net_rf24 = RF24.RF24()
+        self.net_socket = Sockets.Sockets()
+        self.net_usb = USB.USB()
