@@ -9,7 +9,7 @@
 #   incoming node connections and handles them
 
 
-class DiNoLogServer():
+class DiNoLogServer:
 
     def __init__(self):
         '''Initialize some basic parameters and load the config file'''
