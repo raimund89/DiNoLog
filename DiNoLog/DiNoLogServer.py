@@ -28,13 +28,21 @@
 #   incoming node connections and handles them
 
 from .ServerHandlers import (LoggingHandler, NodeHandler, QueryHandler,
-                             SyncHandler)
+                             SyncHandler, ConfigHandler)
 
 
 class DiNoLogServer():
 
     def __init__(self):
         '''Initialize the DiNoLog server'''
+
+        self.confighandler = ConfigHandler.ConfigHandler()
+        if self.confighandler.status()['code'] != True:
+            print("\n====================== WARNING ======================")
+            print("Do not use this instance of DiNoLogServer! Something")
+            print("went wrong during initialization. Check the logs!")
+            print("====================== WARNING ======================\n")
+            return
 
         self.loghandler = LoggingHandler.LoggingHandler()
         self.nodehandler = NodeHandler.NodeHandler()
@@ -53,3 +61,12 @@ class DiNoLogServer():
     def stop(self):
         '''A graceful way of killing the server'''
         pass
+
+    def status(self):
+        '''Returns the status of the server.'''
+        # Status can be True or False. If False, an additional string will
+        # specify what exactly is the problem
+        if self.confighandler.status()['code'] != True:
+            return {'code': False, 'reason': 'Confighandler: ' +
+                    self.confighandler.status()['reason']}
+
