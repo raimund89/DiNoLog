@@ -27,12 +27,21 @@
 # - When syncing is done, create a NodeHandler. It listens for any
 #   incoming node connections and handles them
 
+from .ServerHandlers.LoggingHandler import LoggingHandler
+from .ServerHandlers.NodeHandler import NodeHandler
+from .ServerHandlers.QueryHandler import QueryHandler
+from .ServerHandlers.SyncHandler import SyncHandler
 
-class DiNoLogServer:
+
+class DiNoLogServer():
 
     def __init__(self):
-        '''Initialize some basic parameters and load the config file'''
-        pass
+        '''Initialize the DiNoLog server'''
+
+        self.loghandler = LoggingHandler()
+        self.nodehandler = NodeHandler()
+        self.queryhandler = QueryHandler()
+        self.synchandler = SyncHandler()
 
     def update(self):
         '''Forces a synchronization between the servers. Must be done'''
@@ -45,10 +54,4 @@ class DiNoLogServer:
 
     def stop(self):
         '''A graceful way of killing the server'''
-        pass
-
-
-class LoggingHandler():
-
-    def __init__(self):
         pass
