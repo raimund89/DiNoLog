@@ -20,3 +20,7 @@
 """
 
 '''Initial Python file for the DiNoLog module'''
+
+# Importing the Server and Node packages if somebody wants the entire package
+from .Node import DiNoLogNode
+from .Server import DiNoLogServer
