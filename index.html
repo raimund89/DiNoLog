@@ -31,44 +31,44 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>
-<a id="welcome-to-dinolog" class="anchor" href="#welcome-to-dinolog" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to DiNoLog</h3>
+        <h2>
+<a id="welcome-to-dinolog" class="anchor" href="#welcome-to-dinolog" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to DiNoLog</h2>
 
 <p>This Python package will provide the modules necessary to run an 'Internet-of-Things' system. It is still a work in progress, at the moment it consists of about 20 lines of code.. The most important information at this moment is therefore the set of goals, and a design for the architecture of the package. This page will constantly be updated with the latest information.</p>
 
-<h3>
-<a id="the-goal" class="anchor" href="#the-goal" aria-hidden="true"><span class="octicon octicon-link"></span></a>The goal</h3>
+<h2>
+<a id="the-goal" class="anchor" href="#the-goal" aria-hidden="true"><span class="octicon octicon-link"></span></a>The goal</h2>
 
 <p>The goal is to be able to log any kind of timestamped information (from simple datatypes like integers/floats to binary data like images and sound) to a server pool, which consists of at least one server. This data can later be queried for use in any application, or used when incoming by registering callback functions or overloading the DiNoLogServer class. Any number of nodes (i.e. Raspberry Pi, Arduino, another computer, or even microprocessors with USB or a wireless connection) can be registered to the server pool as long as they support one of the connection methods. The servers will synchronize any changes in their database to each other, making sure that their databases are the same.</p>
 
-<h2>
-<a id="the-featurelist" class="anchor" href="#the-featurelist" aria-hidden="true"><span class="octicon octicon-link"></span></a>The featurelist</h2>
+<h3>
+<a id="the-featurelist" class="anchor" href="#the-featurelist" aria-hidden="true"><span class="octicon octicon-link"></span></a>The featurelist</h3>
 
 <p>This list contains all the features that were, will be or are part of DiNoLog. Because of this the list will constantly be changing, with some features being added to the wishlist, others being removed because of all kinds of reasons. This list will hopefully be updated during development, but always check the release notes to be sure of the functionality!</p>
 
 <table>
 <thead>
 <tr>
-<th>dog</th>
-<th>bird</th>
-<th>cat</th>
+<th>Module</th>
+<th>Feature</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>foo</td>
-<td>foo</td>
-<td>foo</td>
+<td>Server</td>
+<td>Config file with initialization settings (server name, listing port, etc.)</td>
+<td>10% in master branch</td>
 </tr>
 <tr>
-<td>bar</td>
-<td>bar</td>
-<td>bar</td>
+<td></td>
+<td>Runtime log in systemd</td>
+<td>Not supported</td>
 </tr>
 <tr>
-<td>baz</td>
-<td>baz</td>
-<td>baz</td>
+<td>Node</td>
+<td>Runtime log in systemd</td>
+<td>Not supported</td>
 </tr>
 </tbody>
 </table>
