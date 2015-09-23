@@ -35,4 +35,8 @@ class DiNoLogNode:
 
     def status(self):
         '''Returns the status of the node'''
-        pass
+
+        if 0:
+            pass
+        else:
+            return {'code': True, 'reason': ''}

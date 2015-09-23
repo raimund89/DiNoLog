@@ -125,6 +125,8 @@ class DiNoLogServer():
         if not self.confighandler.status()['code']:
             return {'code': False, 'reason': 'Confighandler: ' +
                                              self.confighandler.status()['reason']}
+        else:
+            return {'code': True, 'reason': ''}
 
     def print_warning(self):
         '''Print a do-not-use warning if something went wrong'''

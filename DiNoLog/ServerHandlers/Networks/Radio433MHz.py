@@ -28,4 +28,8 @@ class Radio433MHz():
 
     def status(self):
         '''Returns the status of the 433MHz radio monitoring'''
-        pass
+
+        if 0:
+            pass
+        else:
+            return {'code': True, 'reason': ''}

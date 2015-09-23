@@ -28,4 +28,8 @@ class USB():
 
     def status(self):
         '''Returns the status of the USB monitoring'''
-        pass
+
+        if 0:
+            pass
+        else:
+            return {'code': True, 'reason': ''}

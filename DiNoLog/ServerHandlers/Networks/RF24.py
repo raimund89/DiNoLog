@@ -28,4 +28,8 @@ class RF24():
 
     def status(self):
         '''Returns the status of the nRF24L01+ monitoring'''
-        pass
+
+        if 0:
+            pass
+        else:
+            return {'code': True, 'reason': ''}

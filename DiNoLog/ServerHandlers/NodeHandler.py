@@ -44,4 +44,7 @@ class NodeHandler():
         '''Returns the status of the handler.'''
         # Status can be True or False. If False, an additional string will
         # specify what exactly is the problem
-        pass
+        if 0:
+            pass
+        else:
+            return {'code': True, 'reason': ''}
