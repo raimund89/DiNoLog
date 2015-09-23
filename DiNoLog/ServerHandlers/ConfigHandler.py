@@ -23,6 +23,8 @@ import configparser
 
 
 class ConfigHandler(configparser.ConfigParser):
+    # pylint: disable=too-many-ancestors
+    '''A modified ConfigParser to add some DiNoLog functionality'''
 
     def __init__(self):
         super().__init__()

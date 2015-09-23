@@ -23,6 +23,7 @@ from .Networks import Ethernet, Radio433MHz, RF24, Sockets, USB
 
 
 class NodeHandler():
+    '''Handles all incoming client information, uses the Network-classes'''
 
     def __init__(self):
         self.net_ethernet = Ethernet.Ethernet()
@@ -30,6 +31,14 @@ class NodeHandler():
         self.net_rf24 = RF24.RF24()
         self.net_socket = Sockets.Sockets()
         self.net_usb = USB.USB()
+
+    def run(self):
+        '''Start all enabled (in serverconf) Networks for listening'''
+        pass
+
+    def stop(self):
+        '''Stop all running Network listeners'''
+        pass
 
     def status(self):
         '''Returns the status of the handler.'''

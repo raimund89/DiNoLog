@@ -23,6 +23,7 @@ from DiNoLog.DiNoLogServer import DiNoLogServer
 
 
 def run():
+    '''This runs the most basic server test: can it run?'''
     try:
         server = DiNoLogServer()
         if server.status()['code'] != True:

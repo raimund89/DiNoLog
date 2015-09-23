@@ -21,6 +21,11 @@
 
 
 class DiNoLogNode:
+    '''The main node class of the DiNoLog logging system'''
 
     def __init__(self):
+        pass
+
+    def status(self):
+        '''Returns the status of the node'''
         pass

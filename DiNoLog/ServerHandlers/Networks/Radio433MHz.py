@@ -21,6 +21,11 @@
 
 
 class Radio433MHz():
+    '''Class providing monitoring of 433MHz radios connected to the server'''
 
     def __init__(self):
+        pass
+
+    def status(self):
+        '''Returns the status of the 433MHz radio monitoring'''
         pass

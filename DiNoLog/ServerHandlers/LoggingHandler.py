@@ -23,8 +23,17 @@ import h5py
 
 
 class LoggingHandler():
+    '''Handles the logging of all incoming node data to the database'''
 
     def __init__(self):
+        pass
+
+    def run(self):
+        '''Handle the logging queue, so the database will be updated'''
+        pass
+
+    def stop(self):
+        '''Stop handling the queue. Any new data will not be processed'''
         pass
 
     def status(self):

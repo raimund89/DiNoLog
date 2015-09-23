@@ -21,8 +21,17 @@
 
 
 class QueryHandler():
+    '''Handles all incoming requests for data from external sources'''
 
     def __init__(self):
+        pass
+
+    def run(self):
+        '''Run the query listener'''
+        pass
+
+    def stop(self):
+        '''Stop the query listener'''
         pass
 
     def status(self):

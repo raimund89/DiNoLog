@@ -32,6 +32,7 @@ from .ServerHandlers import (LoggingHandler, NodeHandler, QueryHandler,
 
 
 class DiNoLogServer():
+    '''The main server class of the DiNoLog logging system'''
 
     def __init__(self):
         '''Initialize the DiNoLog server'''
@@ -50,8 +51,8 @@ class DiNoLogServer():
         self.synchandler = SyncHandler.SyncHandler()
 
     def update(self):
-        '''Forces a synchronization between the servers. Must be done'''
-        '''before the /run/ function can be called!!'''
+        '''Forces a synchronization between the servers. Must be done
+           before the /run/ function can be called!!'''
         pass
 
     def run(self):
@@ -63,10 +64,9 @@ class DiNoLogServer():
         pass
 
     def status(self):
-        '''Returns the status of the server.'''
+        '''Returns the status of the server'''
         # Status can be True or False. If False, an additional string will
         # specify what exactly is the problem
         if self.confighandler.status()['code'] != True:
             return {'code': False, 'reason': 'Confighandler: ' +
-                    self.confighandler.status()['reason']}
-
+                                             self.confighandler.status()['reason']}
