@@ -43,9 +43,24 @@ class DiNoLogServer():
             return
 
         self.loghandler = LoggingHandler.LoggingHandler()
+        if not self.loghandler.status()['code']:
+            self.print_warning()
+            return
+
         self.synchandler = SyncHandler.SyncHandler()
+        if not self.synchandler.status()['code']:
+            self.print_warning()
+            return
+
         self.nodehandler = NodeHandler.NodeHandler()
+        if not self.nodehandler.status()['code']:
+            self.print_warning()
+            return
+
         self.queryhandler = QueryHandler.QueryHandler()
+        if not self.queryhandler.status()['code']:
+            self.print_warning()
+            return
 
     def update(self):
         '''Forces a synchronization between the servers. Must be done
