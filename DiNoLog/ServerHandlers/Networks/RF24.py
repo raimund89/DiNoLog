@@ -24,7 +24,6 @@ class RF24():
     '''Class providing monitoring of nRF24L01+-mods connected to the server'''
 
     def __init__(self):
-
         pass
 
     def status(self):

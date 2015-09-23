@@ -24,7 +24,6 @@ class Ethernet():
     '''Class providing monitoring of the network interfaces of the server'''
 
     def __init__(self):
-
         pass
 
     def status(self):

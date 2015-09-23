@@ -29,7 +29,6 @@
 
 from .ServerHandlers import (LoggingHandler, NodeHandler, QueryHandler,
                              SyncHandler, ConfigHandler)
-from time import time
 
 
 class DiNoLogServer():
@@ -37,8 +36,6 @@ class DiNoLogServer():
 
     def __init__(self):
         '''Initialize the DiNoLog server'''
-
-        # TODO: making the appropriate attributes private
 
         self.confighandler = ConfigHandler.ConfigHandler()
         if not self.confighandler.status()['code']:
@@ -68,12 +65,10 @@ class DiNoLogServer():
     def update(self):
         '''Forces a synchronization between the servers. Must be done
            before the /run/ function can be called!!'''
-
         pass
 
     def run(self):
         '''Actually starts the server to listen to the nodes'''
-
         if self.loghandler.status()['code']:
             self.loghandler.run()
         else:
@@ -125,7 +120,6 @@ class DiNoLogServer():
 
     def status(self):
         '''Returns the status of the server'''
-
         # Status can be True or False. If False, an additional string will
         # specify what exactly is the problem
         if not self.confighandler.status()['code']:
@@ -136,21 +130,8 @@ class DiNoLogServer():
 
     def print_warning(self):
         '''Print a do-not-use warning if something went wrong'''
-
         # TODO: raise errors or return error codes for better error-handling
         print("\n====================== WARNING ======================")
         print("Do not use this instance of DiNoLogServer! Something")
         print("went wrong during initialization. Check the logs!")
         print("====================== WARNING ======================\n")
-
-    def log(self, data, location, timestamp=None):
-        '''Adds the ability to (directly) log something to the server'''
-
-        if data is None or location is None:
-            return False
-
-        # If no timestamp is given, use our own timestamp
-        if timestamp is None:
-            timestamp = time()
-
-        return self.loghandler.log(data, timestamp)

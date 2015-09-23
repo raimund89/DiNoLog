@@ -26,7 +26,6 @@ class NodeHandler():
     '''Handles all incoming client information, uses the Network-classes'''
 
     def __init__(self):
-
         self.net_ethernet = Ethernet.Ethernet()
         self.net_radio = Radio433MHz.Radio433MHz()
         self.net_rf24 = RF24.RF24()
@@ -35,17 +34,14 @@ class NodeHandler():
 
     def run(self):
         '''Start all enabled (in serverconf) Networks for listening'''
-
         pass
 
     def stop(self):
         '''Stop all running Network listeners'''
-
         pass
 
     def status(self):
         '''Returns the status of the handler.'''
-
         # Status can be True or False. If False, an additional string will
         # specify what exactly is the problem
         if 0:
