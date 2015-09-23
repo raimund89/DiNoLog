@@ -20,21 +20,71 @@
 """
 
 import h5py
+from multiprocessing import Queue
+from threading import Event, Thread
+from time import sleep
 
 
 class LoggingHandler():
     '''Handles the logging of all incoming node data to the database'''
 
     def __init__(self):
-        pass
+
+        # We need a queue for all applications that
+        # want to send or receive data
+        self.queue = Queue()
+
+        # The event that enables the handler to stop running
+        self.stoprunning = Event()
+
+        # Set this one up for later
+        self.processthread = None
 
     def run(self):
         '''Handle the logging queue, so the database will be updated'''
-        pass
+
+        # First make sure the stop event is not set
+        self.stoprunning.clear()
+
+        # Set the running variable
+        self.processthread = Thread(None, self.process, 'LoggingHandler-0',
+                                    (self.stoprunning, self.queue))
+
+        # And now run it!
+        self.processthread.start()
 
     def stop(self):
         '''Stop handling the queue. Any new data will not be processed'''
-        pass
+
+        # Set the event to stop running.
+        self.stoprunning.set()
+
+        # No wait for the process function to finish
+        self.processthread.join()
+
+    def process(self, e, queue):
+        '''Process the incoming database'''
+
+        # As long as we do not get a stop signal
+        while not e.is_set():
+            if not queue.empty():
+                # We can get an item from the queue
+                item = queue.get()
+            else:
+                # Wait a little while to not stress the processor
+                sleep(0.02)  # 20 milliseconds
+
+        print('Got the stop signal, so stopping')
+
+    def log(self, data, location, timestamp=None):
+        '''Add new data to the queue'''
+
+        # At this moment we assume no errors will occur here, because
+        # this function should NEVER be called by external sources
+
+        self.queue.put({'data': data, 'location': location, 'time': timestamp})
+
+        return True
 
     def status(self):
         '''Returns the status of the handler.'''
