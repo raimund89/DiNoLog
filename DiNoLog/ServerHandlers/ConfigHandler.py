@@ -27,6 +27,7 @@ class ConfigHandler(configparser.ConfigParser):
     '''A modified ConfigParser to add some DiNoLog functionality'''
 
     def __init__(self):
+
         super().__init__()
 
         # TODO: add other ways to specify the location of the config file
@@ -47,6 +48,7 @@ class ConfigHandler(configparser.ConfigParser):
 
     def status(self):
         '''Returns the status of the handler.'''
+
         # Status can be True or False. If False, an additional string will
         # specify what exactly is the problem
         if not self.hasfile:

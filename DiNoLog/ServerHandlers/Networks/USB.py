@@ -24,6 +24,7 @@ class USB():
     '''Class providing monitoring of the USB-ports of the server'''
 
     def __init__(self):
+
         pass
 
     def status(self):

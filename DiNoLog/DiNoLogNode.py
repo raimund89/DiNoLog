@@ -24,6 +24,7 @@ class DiNoLogNode:
     '''The main node class of the DiNoLog logging system'''
 
     def __init__(self):
+
         pass
 
     def send_data(self, data, timestamp=None):

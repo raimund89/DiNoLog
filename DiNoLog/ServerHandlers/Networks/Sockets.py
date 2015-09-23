@@ -24,6 +24,7 @@ class Sockets():
     '''Class providing monitoring of internal sockets of the server'''
 
     def __init__(self):
+
         pass
 
     def status(self):

@@ -24,15 +24,25 @@ from DiNoLog.DiNoLogServer import DiNoLogServer
 
 def run():
     '''This runs the most basic server test: can it run?'''
+
     try:
         server = DiNoLogServer()
-        if server.status()['code'] != True:
+        if not server.status()['code']:
             print("Not continuing, something is wrong")
         else:
             print("Running the server")
             server.run()
+            stop = False
+            while not stop:
+                data = input('Return an empty line to stop...')
+                if data != '':
+                    server.log(data, '/test/commandline')
+                else:
+                    stop = True
+            server.stop()
     except:
         print('Something went wrong. Check the logs.')
+        raise  # Raise the error again for debugging
     finally:
         print('Goodbye!')
 
