@@ -70,6 +70,29 @@ class LoggingHandler():
             if not queue.empty():
                 # We can get an item from the queue
                 item = queue.get()
+
+                # Action values:
+                # 0 - Data logging
+                # 1 - Registration of new node
+                # 2 - Registration of new server
+                # 3 - Query of data
+
+                if item['action'] == 0:
+                    # Log it!
+                    pass
+                elif item['action'] == 1:
+                    # Register a node
+                    pass
+                elif item['action'] == 2:
+                    # Register a server
+                    pass
+                elif item['action'] == 3:
+                    # Its a query
+                    pass
+                else:
+                    # Unknown action, log an error and continue
+                    print('Unknown queue action')
+
             else:
                 # Wait a little while to not stress the processor
                 sleep(0.02)  # 20 milliseconds
@@ -82,7 +105,9 @@ class LoggingHandler():
         # At this moment we assume no errors will occur here, because
         # this function should NEVER be called by external sources
 
-        self.queue.put({'data': data, 'location': location, 'time': timestamp})
+        # Add it to the queue. Action 0 indicates a logging action
+        self.queue.put({'data': data, 'location': location,
+                        'time': timestamp, 'action': 0})
 
         return True
 
