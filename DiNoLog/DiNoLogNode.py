@@ -26,6 +26,13 @@ class DiNoLogNode:
     def __init__(self):
         pass
 
+    def send_data(self, data, timestamp=None):
+        '''Send data to the server'''
+
+        # Type determination is done by this function.
+        # If it fails, we do not send the data and report back to the user
+        pass
+
     def status(self):
         '''Returns the status of the node'''
         pass
