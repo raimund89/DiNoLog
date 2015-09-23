@@ -38,17 +38,14 @@ class DiNoLogServer():
         '''Initialize the DiNoLog server'''
 
         self.confighandler = ConfigHandler.ConfigHandler()
-        if self.confighandler.status()['code'] != True:
-            print("\n====================== WARNING ======================")
-            print("Do not use this instance of DiNoLogServer! Something")
-            print("went wrong during initialization. Check the logs!")
-            print("====================== WARNING ======================\n")
+        if not self.confighandler.status()['code']:
+            self.print_warning()
             return
 
         self.loghandler = LoggingHandler.LoggingHandler()
+        self.synchandler = SyncHandler.SyncHandler()
         self.nodehandler = NodeHandler.NodeHandler()
         self.queryhandler = QueryHandler.QueryHandler()
-        self.synchandler = SyncHandler.SyncHandler()
 
     def update(self):
         '''Forces a synchronization between the servers. Must be done
@@ -57,16 +54,67 @@ class DiNoLogServer():
 
     def run(self):
         '''Actually starts the server to listen to the nodes'''
-        pass
+        if self.loghandler.status()['code']:
+            self.loghandler.run()
+        else:
+            self.print_warning()
+            return
+
+        if self.synchandler.status()['code']:
+            self.synchandler.run()
+        else:
+            self.loghandler.stop()
+            self.print_warning()
+            return
+
+        if self.nodehandler.status()['code']:
+            self.nodehandler.run()
+        else:
+            self.synchandler.stop()
+            self.loghandler.stop()
+            self.print_warning()
+            return
+
+        if self.queryhandler.status()['code']:
+            self.queryhandler.run()
+        else:
+            self.nodehandler.stop()
+            self.synchandler.stop()
+            self.loghandler.stop()
+            self.print_warning()
+            return
 
     def stop(self):
         '''A graceful way of killing the server'''
-        pass
+
+        self.queryhandler.stop()
+        if not self.queryhandler.status()['code']:
+            self.print_warning()
+
+        self.nodehandler.stop()
+        if not self.queryhandler.status()['code']:
+            self.print_warning()
+
+        self.synchandler.stop()
+        if not self.queryhandler.status()['code']:
+            self.print_warning()
+
+        self.loghandler.stop()
+        if not self.loghandler.status()['code']:
+            self.print_warning()
 
     def status(self):
         '''Returns the status of the server'''
         # Status can be True or False. If False, an additional string will
         # specify what exactly is the problem
-        if self.confighandler.status()['code'] != True:
+        if not self.confighandler.status()['code']:
             return {'code': False, 'reason': 'Confighandler: ' +
                                              self.confighandler.status()['reason']}
+
+    def print_warning(self):
+        '''Print a do-not-use warning if something went wrong'''
+        # TODO: raise errors or return error codes for better error-handling
+        print("\n====================== WARNING ======================")
+        print("Do not use this instance of DiNoLogServer! Something")
+        print("went wrong during initialization. Check the logs!")
+        print("====================== WARNING ======================\n")
