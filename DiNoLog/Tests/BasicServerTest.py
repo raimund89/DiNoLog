@@ -35,3 +35,7 @@ def run():
         print('Something went wrong. Check the logs.')
     finally:
         print('Goodbye!')
+
+# If the file is run as is, just run the test
+if __name__ == '__main__':
+    run()
