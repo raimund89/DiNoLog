@@ -93,6 +93,8 @@ class NodeHandler():
     def status(self):
         '''Returns the status of the handler.'''
 
+        # TODO: increase the testing in this status method
+
         # Status can be True or False. If False, an additional string will
         # specify what exactly is the problem
         if self.config['Networks']['Ethernet'] and self.net_ethernet is None:
