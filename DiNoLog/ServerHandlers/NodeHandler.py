@@ -53,6 +53,8 @@ class NodeHandler():
     def run(self):
         '''Start all enabled (in serverconf) Networks for listening'''
 
+        self.stoprunning.clear()
+
         if self.net_ethernet:
             self.net_ethernet.start()
 
