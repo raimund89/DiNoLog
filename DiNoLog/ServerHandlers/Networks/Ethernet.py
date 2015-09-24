@@ -19,7 +19,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 
-from threading import Event, Thread
+from threading import Thread
 from time import sleep, time
 
 
@@ -47,11 +47,3 @@ class Ethernet(Thread):
             print('Sent something to the queue')
 
         print('Got the stop signal, so stopping')
-
-    def status(self):
-        '''Returns the status of the network interface monitoring'''
-
-        if 0:
-            pass
-        else:
-            return {'code': True, 'reason': ''}
