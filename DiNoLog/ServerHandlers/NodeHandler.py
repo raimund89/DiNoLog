@@ -31,6 +31,9 @@ class NodeHandler():
         # An event to stop all networks
         self.stoprunning = Event()
 
+        # Remember the config
+        self.config = config
+
         if config['Networks']['Ethernet'] == 'enabled':
             self.net_ethernet = Ethernet.Ethernet(self.stoprunning, loghandler)
 
@@ -90,7 +93,15 @@ class NodeHandler():
 
         # Status can be True or False. If False, an additional string will
         # specify what exactly is the problem
-        if 0:
-            pass
+        if self.config['Networks']['Ethernet'] and self.net_ethernet is None:
+            return {'code': False, 'reason': 'Ethernet not monitored'}
+        elif self.config['Networks']['Radio433MHz'] and self.net_radio is None:
+            return {'code': False, 'reason': 'Radio not monitored'}
+        elif self.config['Networks']['RF24'] and self.net_rf24 is None:
+            return {'code': False, 'reason': 'RF24 not monitored'}
+        elif self.config['Networks']['Sockets'] and self.net_socket is None:
+            return {'code': False, 'reason': 'Sockets not monitored'}
+        elif self.config['Networks']['USB'] and self.net_usb is None:
+            return {'code': False, 'reason': 'USB not monitored'}
         else:
             return {'code': True, 'reason': ''}
