@@ -75,47 +75,50 @@ class LoggingHandler():
         '''Process the incoming database'''
 
         # As long as we do not get a stop signal
-        while not event.is_set():
-            if not queue.empty():
-                # We can get an item from the queue
-                item = queue.get()
-                print(item['data'])
+        # Even if we need to stop: first process the remaining items!
+        while not event.is_set() or not queue.empty():
 
-                # Action values:
-                # 0 - Data logging
-                # 1 - Registration of new node
-                # 2 - Registration of new server
-                # 3 - Query of data
-                # 4 - Request for server list
-                # 5 - Request for node list
-
-                if item['action'] == 0:
-                    # Log it!
-                    pass
-                elif item['action'] == 1:
-                    # Register a node
-                    pass
-                elif item['action'] == 2:
-                    # Register a server
-                    pass
-                elif item['action'] == 3:
-                    # Its a query
-                    pass
-                elif item['action'] == 4:
-                    # Returning a list of all registered servers
-                    pass
-                elif item['action'] == 5:
-                    # Returning a list of all registered nodes
-                    pass
-                else:
-                    # Unknown action, log an error and continue
-                    print('Unknown queue action')
-
-            else:
+            if queue.empty():
                 # Wait a little while to not stress the processor
                 sleep(0.02)  # 20 milliseconds
 
-        print('Got the stop signal, so stopping')
+                continue
+
+            # We can get an item from the queue
+            item = queue.get()
+            print(item['data'])
+
+            # Action values:
+            # 0 - Data logging
+            # 1 - Registration of new node
+            # 2 - Registration of new server
+            # 3 - Query of data
+            # 4 - Request for server list
+            # 5 - Request for node list
+
+            if item['action'] == 0:
+                # Log it!
+                pass
+            elif item['action'] == 1:
+                # Register a node
+                pass
+            elif item['action'] == 2:
+                # Register a server
+                pass
+            elif item['action'] == 3:
+                # Its a query
+                pass
+            elif item['action'] == 4:
+                # Returning a list of all registered servers
+                pass
+            elif item['action'] == 5:
+                # Returning a list of all registered nodes
+                pass
+            else:
+                # Unknown action, log an error and continue
+                print('Unknown queue action')
+
+        print('LoggingHandler: got the stop signal, so stopping')
 
     def log(self, data, location, timestamp=None):
         '''Add new data to the queue'''
