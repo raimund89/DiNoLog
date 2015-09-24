@@ -30,6 +30,7 @@
 from .ServerHandlers import (LoggingHandler, NodeHandler, QueryHandler,
                              SyncHandler, ConfigHandler)
 from time import time
+from threading import Event
 
 
 class DiNoLogServer():
@@ -40,14 +41,17 @@ class DiNoLogServer():
 
         # TODO: making the appropriate attributes private
 
+        # An event to stop the LoggingHandler
+        self.stopevent = Event()
+
         self.confighandler = ConfigHandler.ConfigHandler(configfile)
         if not self.confighandler.status()['code']:
             self.print_warning()
             return
 
         self.loghandler = LoggingHandler.LoggingHandler(
-            self.confighandler['Database'])
-        if not self.loghandler.status()['code']:
+            self.confighandler['Database'], self.stopevent)
+        if self.loghandler is None:
             self.print_warning()
             return
 
@@ -77,8 +81,10 @@ class DiNoLogServer():
     def run(self):
         '''Actually starts the server to listen to the nodes'''
 
-        if self.loghandler.status()['code']:
-            self.loghandler.run()
+        self.stopevent.clear()
+
+        if self.loghandler:
+            self.loghandler.start()
         else:
             self.print_warning()
             return
@@ -86,7 +92,8 @@ class DiNoLogServer():
         if self.synchandler.status()['code']:
             self.synchandler.run()
         else:
-            self.loghandler.stop()
+            self.stopevent.set()
+            self.loghandler.join()
             self.print_warning()
             return
 
@@ -94,7 +101,8 @@ class DiNoLogServer():
             self.nodehandler.run()
         else:
             self.synchandler.stop()
-            self.loghandler.stop()
+            self.stopevent.set()
+            self.loghandler.join()
             self.print_warning()
             return
 
@@ -103,7 +111,8 @@ class DiNoLogServer():
         else:
             self.nodehandler.stop()
             self.synchandler.stop()
-            self.loghandler.stop()
+            self.stopevent.set()
+            self.loghandler.join()
             self.print_warning()
             return
 
@@ -122,9 +131,8 @@ class DiNoLogServer():
         if not self.queryhandler.status()['code']:
             self.print_warning()
 
-        self.loghandler.stop()
-        if not self.loghandler.status()['code']:
-            self.print_warning()
+        self.stopevent.set()
+        self.loghandler.join()
 
     def status(self):
         '''Returns the status of the server'''

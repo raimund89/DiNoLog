@@ -21,24 +21,22 @@
 
 import h5py
 from multiprocessing import Queue
-from threading import Event, Thread
+from threading import Thread
 from time import sleep
 
 
-class LoggingHandler():
+class LoggingHandler(Thread):
     '''Handles the logging of all incoming node data to the database'''
 
-    def __init__(self, config):
+    def __init__(self, config, event):
+        Thread.__init__(self)
 
         # We need a queue for all applications that
         # want to send or receive data
         self.queue = Queue()
 
-        # The event that enables the handler to stop running
-        self.stoprunning = Event()
-
-        # Set this one up for later
-        self.processthread = None
+        # The event that enables the server to stop this service
+        self.stoprunning = event
 
         # Now open the database file
         self.database = h5py.File(config['Path'], 'a')
@@ -50,42 +48,20 @@ class LoggingHandler():
         # TODO: set compression
 
     def run(self):
-        '''Handle the logging queue, so the database will be updated'''
-
-        # First make sure the stop event is not set
-        self.stoprunning.clear()
-
-        # Set the running variable
-        self.processthread = Thread(None, self.process, 'LoggingHandler-0',
-                                    (self.stoprunning, self.queue))
-
-        # And now run it!
-        self.processthread.start()
-
-    def stop(self):
-        '''Stop handling the queue. Any new data will not be processed'''
-
-        # Set the event to stop running.
-        self.stoprunning.set()
-
-        # No wait for the process function to finish
-        self.processthread.join()
-
-    def process(self, event, queue):
         '''Process the incoming database'''
 
         # As long as we do not get a stop signal
         # Even if we need to stop: first process the remaining items!
-        while not event.is_set() or not queue.empty():
+        while not self.stoprunning.is_set() or not self.queue.empty():
 
-            if queue.empty():
+            if self.queue.empty():
                 # Wait a little while to not stress the processor
                 sleep(0.02)  # 20 milliseconds
 
                 continue
 
             # We can get an item from the queue
-            item = queue.get()
+            item = self.queue.get()
             print(item['data'])
 
             # Action values:
@@ -131,12 +107,3 @@ class LoggingHandler():
                         'time': timestamp, 'action': 0})
 
         return True
-
-    def status(self):
-        '''Returns the status of the handler.'''
-        # Status can be True or False. If False, an additional string will
-        # specify what exactly is the problem
-        if 0:
-            pass
-        else:
-            return {'code': True, 'reason': ''}
