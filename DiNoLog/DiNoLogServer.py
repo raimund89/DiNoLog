@@ -35,12 +35,12 @@ from time import time
 class DiNoLogServer():
     '''The main server class of the DiNoLog logging system'''
 
-    def __init__(self):
+    def __init__(self, configfile=None):
         '''Initialize the DiNoLog server'''
 
         # TODO: making the appropriate attributes private
 
-        self.confighandler = ConfigHandler.ConfigHandler()
+        self.confighandler = ConfigHandler.ConfigHandler(configfile)
         if not self.confighandler.status()['code']:
             self.print_warning()
             return

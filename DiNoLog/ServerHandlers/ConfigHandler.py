@@ -26,14 +26,15 @@ class ConfigHandler(configparser.ConfigParser):
     # pylint: disable=too-many-ancestors
     '''A modified ConfigParser to add some DiNoLog functionality'''
 
-    def __init__(self):
+    def __init__(self, configfile=None):
 
         super().__init__()
 
-        # TODO: add other ways to specify the location of the config file
-        # For now, the config file is in the current directory
+        if configfile is None:
+            configfile = 'dinologserver.conf'
+
         try:
-            self.read_file(open('dinologserver.conf'))
+            self.read_file(open(configfile))
             self.hasfile = True
         except IOError:
             # The config file does not exist. Quit with the message
