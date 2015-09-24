@@ -57,8 +57,9 @@ class DiNoLogServer():
 
         # TODO: check if this server is registered in the database
 
-        self.synchandler = SyncHandler.SyncHandler()
-        if not self.synchandler.status()['code']:
+        self.synchandler = SyncHandler.SyncHandler(
+            self.confighandler['Server Pool'], self.stopevent)
+        if self.synchandler is None:
             self.print_warning()
             return
 
@@ -89,8 +90,8 @@ class DiNoLogServer():
             self.print_warning()
             return
 
-        if self.synchandler.status()['code']:
-            self.synchandler.run()
+        if self.synchandler:
+            self.synchandler.start()
         else:
             self.stopevent.set()
             self.loghandler.join()
@@ -100,8 +101,8 @@ class DiNoLogServer():
         if self.nodehandler.status()['code']:
             self.nodehandler.run()
         else:
-            self.synchandler.stop()
             self.stopevent.set()
+            self.synchandler.join()
             self.loghandler.join()
             self.print_warning()
             return
@@ -110,8 +111,8 @@ class DiNoLogServer():
             self.queryhandler.run()
         else:
             self.nodehandler.stop()
-            self.synchandler.stop()
             self.stopevent.set()
+            self.synchandler.join()
             self.loghandler.join()
             self.print_warning()
             return
@@ -127,11 +128,8 @@ class DiNoLogServer():
         if not self.queryhandler.status()['code']:
             self.print_warning()
 
-        self.synchandler.stop()
-        if not self.queryhandler.status()['code']:
-            self.print_warning()
-
         self.stopevent.set()
+        self.synchandler.join()
         self.loghandler.join()
 
     def status(self):

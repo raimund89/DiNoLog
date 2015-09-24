@@ -19,30 +19,26 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 
+from threading import Thread
+from time import sleep
 
-class SyncHandler():
+
+class SyncHandler(Thread):
     '''Organizes the synchronization of the database with other servers'''
 
-    def __init__(self):
+    def __init__(self, config, event):
+        Thread.__init__(self)
 
-        pass
+        # The synchronization config
+        self.config = config
+
+        # The event that will signal the stop command
+        self.stoprunning = event
 
     def run(self):
         '''Start continuous sync, passing new data to all other servers'''
 
-        pass
+        while not self.stoprunning.is_set():
+            sleep(0.2)
 
-    def stop(self):
-        '''Stop continuous sync. Daily and monthly sync can still continue!'''
-
-        pass
-
-    def status(self):
-        '''Returns the status of the handler.'''
-
-        # Status can be True or False. If False, an additional string will
-        # specify what exactly is the problem
-        if 0:
-            pass
-        else:
-            return {'code': True, 'reason': ''}
+        print('SyncHandler: got the stop signal, so stopping')
