@@ -58,7 +58,8 @@ class DiNoLogServer():
             self.print_warning()
             return
 
-        self.nodehandler = NodeHandler.NodeHandler()
+        self.nodehandler = NodeHandler.NodeHandler(
+                                                self.confighandler)
         if not self.nodehandler.status()['code']:
             self.print_warning()
             return
