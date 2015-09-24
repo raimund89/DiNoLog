@@ -150,6 +150,8 @@ class DiNoLogServer():
         print("went wrong during initialization. Check the logs!")
         print("====================== WARNING ======================\n")
 
+        self.stop()
+
     def log(self, data, location, timestamp=None):
         '''Adds the ability to (directly) log something to the server'''
 
