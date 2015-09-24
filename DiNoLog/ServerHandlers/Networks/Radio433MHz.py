@@ -43,4 +43,4 @@ class Radio433MHz(Thread):
             # Wait a little while to not stress the processor
             sleep(0.02)  # 20 milliseconds
 
-        print('Got the stop signal, so stopping')
+        print('Radio_Network: got the stop signal, so stopping')

@@ -46,4 +46,4 @@ class Ethernet(Thread):
                                 '/', time())
             print('Sent something to the queue')
 
-        print('Got the stop signal, so stopping')
+        print('Ethernet_Network: got the stop signal, so stopping')

@@ -43,4 +43,4 @@ class RF24(Thread):
             # Wait a little while to not stress the processor
             sleep(0.02)  # 20 milliseconds
 
-        print('Got the stop signal, so stopping')
+        print('RF24_Network: got the stop signal, so stopping')
