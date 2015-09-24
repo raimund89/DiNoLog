@@ -42,23 +42,23 @@ class NodeHandler():
         if config['Networks']['USB'] == 'enabled':
             self.net_usb = USB.USB()
 
-    def run(self):
+    def run(self, loghandler):
         '''Start all enabled (in serverconf) Networks for listening'''
 
         if self.net_ethernet:
-            self.net_ethernet.run()
+            self.net_ethernet.run(loghandler)
 
         if self.net_radio:
-            self.net_radio.run()
+            self.net_radio.run(loghandler)
 
         if self.net_rf24:
-            self.net_rf24.run()
+            self.net_rf24.run(loghandler)
 
         if self.net_socket:
-            self.net_socket.run()
+            self.net_socket.run(loghandler)
 
         if self.net_usb:
-            self.net_usb.run()
+            self.net_usb.run(loghandler)
 
     def stop(self):
         '''Stop all running Network listeners'''
