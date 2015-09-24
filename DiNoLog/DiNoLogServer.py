@@ -68,8 +68,9 @@ class DiNoLogServer():
             self.print_warning()
             return
 
-        self.queryhandler = QueryHandler.QueryHandler()
-        if not self.queryhandler.status()['code']:
+        self.queryhandler = QueryHandler.QueryHandler(
+            self.confighandler['Querying'], self.stopevent)
+        if self.queryhandler is None:
             self.print_warning()
             return
 
@@ -107,8 +108,8 @@ class DiNoLogServer():
             self.print_warning()
             return
 
-        if self.queryhandler.status()['code']:
-            self.queryhandler.run()
+        if self.queryhandler:
+            self.queryhandler.start()
         else:
             self.nodehandler.stop()
             self.stopevent.set()
@@ -120,15 +121,12 @@ class DiNoLogServer():
     def stop(self):
         '''A graceful way of killing the server'''
 
-        self.queryhandler.stop()
-        if not self.queryhandler.status()['code']:
-            self.print_warning()
-
         self.nodehandler.stop()
-        if not self.queryhandler.status()['code']:
+        if not self.nodehandler.status()['code']:
             self.print_warning()
 
         self.stopevent.set()
+        self.queryhandler.join()
         self.synchandler.join()
         self.loghandler.join()
 

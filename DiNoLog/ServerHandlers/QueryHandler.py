@@ -19,30 +19,26 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 
+from threading import Thread
+from time import sleep
 
-class QueryHandler():
+
+class QueryHandler(Thread):
     '''Handles all incoming requests for data from external sources'''
 
-    def __init__(self):
+    def __init__(self, config, event):
+        Thread.__init__(self)
 
-        pass
+        # The query config
+        self.config = config
+
+        # The event that will signal the stop command
+        self.stoprunning = event
 
     def run(self):
         '''Run the query listener'''
 
-        pass
+        while not self.stoprunning.is_set():
+            sleep(0.2)
 
-    def stop(self):
-        '''Stop the query listener'''
-
-        pass
-
-    def status(self):
-        '''Returns the status of the handler.'''
-
-        # Status can be True or False. If False, an additional string will
-        # specify what exactly is the problem
-        if 0:
-            pass
-        else:
-            return {'code': True, 'reason': ''}
+        print('QueryHandler: got the stop signal, so stopping')
