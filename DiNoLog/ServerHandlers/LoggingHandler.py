@@ -85,6 +85,8 @@ class LoggingHandler():
                 # 1 - Registration of new node
                 # 2 - Registration of new server
                 # 3 - Query of data
+                # 4 - Request for server list
+                # 5 - Request for node list
 
                 if item['action'] == 0:
                     # Log it!
@@ -97,6 +99,12 @@ class LoggingHandler():
                     pass
                 elif item['action'] == 3:
                     # Its a query
+                    pass
+                elif item['action'] == 4:
+                    # Returning a list of all registered servers
+                    pass
+                elif item['action'] == 5:
+                    # Returning a list of all registered nodes
                     pass
                 else:
                     # Unknown action, log an error and continue
