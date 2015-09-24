@@ -20,13 +20,27 @@
 """
 
 from DiNoLog.DiNoLogServer import DiNoLogServer
+import getopt
+import sys
 
 
 def run():
     '''This runs the most basic server test: can it run?'''
 
     try:
-        server = DiNoLogServer()
+        opts, args = getopt.getopt(sys.argv[1:], "c:", ["configfile="])
+    except getopt.GetoptError as err:
+        print(err)
+        sys.exit(2)
+
+    configfile = None
+
+    for opt, arg in opts:
+        if opt in ("-c", "--configfile"):
+            configfile = arg
+
+    try:
+        server = DiNoLogServer(configfile)
         if not server.status()['code']:
             print("Not continuing, something is wrong")
         else:
