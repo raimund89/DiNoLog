@@ -19,23 +19,52 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 
+from threading import Event, Thread
+from time import sleep
+
 
 class Sockets():
     '''Class providing monitoring of internal sockets of the server'''
 
     def __init__(self):
 
-        pass
+        # The event that enables the handler to stop running
+        self.stoprunning = Event()
 
-    def run(self):
+        # Set this one up for later
+        self.processthread = None
+
+    def run(self, loghandler):
         '''Run the socket monitoring thread'''
 
-        pass
+        # First make sure the stop event is not set
+        self.stoprunning.clear()
+
+        # Set the running variable
+        self.processthread = Thread(None, self.process, 'SocketHandler-0',
+                                    (self.stoprunning, loghandler))
+
+        # And now run it!
+        self.processthread.start()
 
     def stop(self):
         '''Stop monitoring the sockets'''
 
-        pass
+        # Set the event to stop running.
+        self.stoprunning.set()
+
+        # No wait for the process function to finish
+        self.processthread.join()
+
+    def process(self, event, loghandler):
+        '''Monitor the sockets'''
+
+        # As long as we do not get a stop signal
+        while not event.is_set():
+            # Wait a little while to not stress the processor
+            sleep(0.02)  # 20 milliseconds
+
+        print('Got the stop signal, so stopping')
 
     def status(self):
         '''Returns the status of the socket monitoring'''
