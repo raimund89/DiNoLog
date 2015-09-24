@@ -45,10 +45,13 @@ class DiNoLogServer():
             self.print_warning()
             return
 
-        self.loghandler = LoggingHandler.LoggingHandler()
+        self.loghandler = LoggingHandler.LoggingHandler(
+                                                self.confighandler['Database'])
         if not self.loghandler.status()['code']:
             self.print_warning()
             return
+
+        # TODO: check if this server is registered in the database
 
         self.synchandler = SyncHandler.SyncHandler()
         if not self.synchandler.status()['code']:

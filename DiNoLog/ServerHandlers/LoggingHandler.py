@@ -28,7 +28,7 @@ from time import sleep
 class LoggingHandler():
     '''Handles the logging of all incoming node data to the database'''
 
-    def __init__(self):
+    def __init__(self, config):
 
         # We need a queue for all applications that
         # want to send or receive data
@@ -39,6 +39,15 @@ class LoggingHandler():
 
         # Set this one up for later
         self.processthread = None
+
+        # Now open the database file
+        self.database = h5py.File(config['Path'], 'a')
+
+        if self.database is None:
+            print('Something went wrong while opening the database')
+            return
+
+        # TODO: set compression
 
     def run(self):
         '''Handle the logging queue, so the database will be updated'''
@@ -62,11 +71,11 @@ class LoggingHandler():
         # No wait for the process function to finish
         self.processthread.join()
 
-    def process(self, e, queue):
+    def process(self, event, queue):
         '''Process the incoming database'''
 
         # As long as we do not get a stop signal
-        while not e.is_set():
+        while not event.is_set():
             if not queue.empty():
                 # We can get an item from the queue
                 item = queue.get()
