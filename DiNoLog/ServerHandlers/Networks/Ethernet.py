@@ -27,6 +27,16 @@ class Ethernet():
 
         pass
 
+    def run(self):
+        '''Run the ethernet monitoring thread'''
+
+        pass
+
+    def stop(self):
+        '''Stop monitoring the ethernet'''
+
+        pass
+
     def status(self):
         '''Returns the status of the network interface monitoring'''
 

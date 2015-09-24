@@ -27,6 +27,16 @@ class USB():
 
         pass
 
+    def run(self):
+        '''Run the USB monitoring thread'''
+
+        pass
+
+    def stop(self):
+        '''Stop monitoring the USB-devices'''
+
+        pass
+
     def status(self):
         '''Returns the status of the USB monitoring'''
 

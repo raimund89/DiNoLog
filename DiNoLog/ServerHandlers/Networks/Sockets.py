@@ -27,6 +27,16 @@ class Sockets():
 
         pass
 
+    def run(self):
+        '''Run the socket monitoring thread'''
+
+        pass
+
+    def stop(self):
+        '''Stop monitoring the sockets'''
+
+        pass
+
     def status(self):
         '''Returns the status of the socket monitoring'''
 

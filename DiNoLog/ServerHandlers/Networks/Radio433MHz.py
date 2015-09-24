@@ -27,6 +27,16 @@ class Radio433MHz():
 
         pass
 
+    def run(self):
+        '''Run the radio monitoring thread'''
+
+        pass
+
+    def stop(self):
+        '''Stop monitoring the radio'''
+
+        pass
+
     def status(self):
         '''Returns the status of the 433MHz radio monitoring'''
 

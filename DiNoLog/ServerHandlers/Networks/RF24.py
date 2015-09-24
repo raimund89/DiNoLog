@@ -27,6 +27,16 @@ class RF24():
 
         pass
 
+    def run(self):
+        '''Run the RF24 monitoring thread'''
+
+        pass
+
+    def stop(self):
+        '''Stop monitoring the RF24'''
+
+        pass
+
     def status(self):
         '''Returns the status of the nRF24L01+ monitoring'''
 
