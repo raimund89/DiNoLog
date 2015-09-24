@@ -79,6 +79,7 @@ class LoggingHandler():
             if not queue.empty():
                 # We can get an item from the queue
                 item = queue.get()
+                print(item['data'])
 
                 # Action values:
                 # 0 - Data logging
