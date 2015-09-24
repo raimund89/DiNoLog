@@ -23,44 +23,23 @@ from threading import Event, Thread
 from time import sleep
 
 
-class USB():
+class USB(Thread):
     '''Class providing monitoring of the USB-ports of the server'''
 
-    def __init__(self):
+    def __init__(self, event, loghandler):
+        Thread.__init__(self)
 
         # The event that enables the handler to stop running
-        self.stoprunning = Event()
+        self.stoprunning = event
 
-        # Set this one up for later
-        self.processthread = None
+        # The loghandler to log events
+        self.loghandler = loghandler
 
-    def run(self, loghandler):
-        '''Run the USB monitoring thread'''
-
-        # First make sure the stop event is not set
-        self.stoprunning.clear()
-
-        # Set the running variable
-        self.processthread = Thread(None, self.process, 'USBHandler-0',
-                                    (self.stoprunning, loghandler))
-
-        # And now run it!
-        self.processthread.start()
-
-    def stop(self):
-        '''Stop monitoring the USB-devices'''
-
-        # Set the event to stop running.
-        self.stoprunning.set()
-
-        # No wait for the process function to finish
-        self.processthread.join()
-
-    def process(self, event, loghandler):
+    def run(self):
         '''Monitor the USB devices'''
 
         # As long as we do not get a stop signal
-        while not event.is_set():
+        while not self.stoprunning.is_set():
             # Wait a little while to not stress the processor
             sleep(0.02)  # 20 milliseconds
 

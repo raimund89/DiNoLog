@@ -20,63 +20,70 @@
 """
 
 from .Networks import Ethernet, Radio433MHz, RF24, Sockets, USB
+from threading import Event
 
 
 class NodeHandler():
     '''Handles all incoming client information, uses the Network-classes'''
 
-    def __init__(self, config):
+    def __init__(self, config, loghandler):
+
+        # An event to stop all networks
+        self.stoprunning = Event()
 
         if config['Networks']['Ethernet'] == 'enabled':
-            self.net_ethernet = Ethernet.Ethernet()
+            self.net_ethernet = Ethernet.Ethernet(self.stoprunning, loghandler)
 
         if config['Networks']['Radio433MHz'] == 'enabled':
-            self.net_radio = Radio433MHz.Radio433MHz()
+            self.net_radio = Radio433MHz.Radio433MHz(self.stoprunning,
+                                                     loghandler)
 
         if config['Networks']['RF24'] == 'enabled':
-            self.net_rf24 = RF24.RF24()
+            self.net_rf24 = RF24.RF24(self.stoprunning, loghandler)
 
         if config['Networks']['Sockets'] == 'enabled':
-            self.net_socket = Sockets.Sockets()
+            self.net_socket = Sockets.Sockets(self.stoprunning, loghandler)
 
         if config['Networks']['USB'] == 'enabled':
-            self.net_usb = USB.USB()
+            self.net_usb = USB.USB(self.stoprunning, loghandler)
 
-    def run(self, loghandler):
+    def run(self):
         '''Start all enabled (in serverconf) Networks for listening'''
 
         if self.net_ethernet:
-            self.net_ethernet.run(loghandler)
+            self.net_ethernet.start()
 
         if self.net_radio:
-            self.net_radio.run(loghandler)
+            self.net_radio.start()
 
         if self.net_rf24:
-            self.net_rf24.run(loghandler)
+            self.net_rf24.start()
 
         if self.net_socket:
-            self.net_socket.run(loghandler)
+            self.net_socket.start()
 
         if self.net_usb:
-            self.net_usb.run(loghandler)
+            self.net_usb.start()
 
     def stop(self):
         '''Stop all running Network listeners'''
 
+        self.stoprunning.set()
+
         if self.net_ethernet:
-            self.net_ethernet.stop()
+            self.net_ethernet.join()
 
         if self.net_radio:
-            self.net_radio.stop()
+            self.net_radio.join()
 
         if self.net_rf24:
-            self.net_rf24.stop()
+            self.net_rf24.join()
 
         if self.net_socket:
-            self.net_socket.stop()
+            self.net_socket.join()
 
         if self.net_usb:
-            self.net_usb.stop()
+            self.net_usb.join()
 
     def status(self):
         '''Returns the status of the handler.'''
