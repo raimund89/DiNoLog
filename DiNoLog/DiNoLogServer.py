@@ -152,7 +152,7 @@ class DiNoLogServer():
 
         self.stop()
 
-    def log(self, data, location, timestamp=None):
+    def log(self, data, location, node, timestamp=None):
         '''Adds the ability to (directly) log something to the server'''
 
         if data is None or location is None:
@@ -162,4 +162,4 @@ class DiNoLogServer():
         if timestamp is None:
             timestamp = time()
 
-        return self.loghandler.log(data, timestamp)
+        return self.loghandler.log(data, location, node, timestamp)

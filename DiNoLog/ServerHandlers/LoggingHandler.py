@@ -19,7 +19,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 
-import h5py
+import tables
 from multiprocessing import Queue
 from threading import Thread
 from time import sleep
@@ -39,11 +39,31 @@ class LoggingHandler(Thread):
         self.stoprunning = event
 
         # Now open the database file
-        self.database = h5py.File(config['Path'], 'a')
+        self.database = tables.open_file(config['Path'], mode="a",
+                                         title="DiNoLog")
 
         if self.database is None:
             print('Something went wrong while opening the database')
             return
+
+        if not self.database.root.__contains__('config'):
+            # Apparently, the file is made for the first time.
+
+            # Add the 'config' group, and add the 'servers' and 'nodes'
+            # information tables
+            confgr = self.database.create_group("/", "config",
+                                                "DiNoLog Configuration Group")
+            self.database.create_table(confgr, "servers",
+                                       Table_Servers, "Server Pool")
+            self.database.create_table(config, "nodes", Table_Nodes,
+                                       "Registered Nodes")
+
+            # Add the data group
+            self.database.create_group("/", "data",
+                                       "DiNoLog Data Group")
+
+            # Important: write to the database
+            self.flush()
 
         # TODO: set compression
 
@@ -96,14 +116,33 @@ class LoggingHandler(Thread):
 
         print('LoggingHandler: got the stop signal, so stopping')
 
-    def log(self, data, location, timestamp=None):
+    def log(self, data, location, node, timestamp=None):
         '''Add new data to the queue'''
 
         # At this moment we assume no errors will occur here, because
         # this function should NEVER be called by external sources
 
         # Add it to the queue. Action 0 indicates a logging action
-        self.queue.put({'data': data, 'location': location,
+        self.queue.put({'data': data, 'location': location, 'node': node,
                         'time': timestamp, 'action': 0})
 
         return True
+
+node_types = tables.Enum(['Ethernet', 'Radio433MHz', 'RF24', 'Sockets', 'USB'])
+
+
+class Table_Servers(tables.IsDescription):
+    name = tables.StringCol()
+    ip = tables.StringCol()
+    port = tables.UInt16Col()
+    server_id = tables.UInt32()
+    key = tables.StringCol()
+    description = tables.StringCol()
+
+
+class Table_Nodes(tables.IsDescription):
+    name = tables.StringCol()
+    node_type = tables.EnumCol(node_types, 'Ethernet')
+    node_id = tables.UInt32()
+    key = tables.StringCol()
+    description = tables.StringCol()

@@ -50,7 +50,7 @@ def run():
             while not stop:
                 data = input('Return an empty line to stop...')
                 if data != '':
-                    server.log(data, '/test/commandline')
+                    server.log(data, '/test/commandline', 'Test')
                 else:
                     stop = True
             server.stop()
